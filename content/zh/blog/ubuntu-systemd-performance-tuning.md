@@ -18,8 +18,12 @@ Ubuntu 24.04 的 systemd 默认限制定义在系统配置文件中：
 
 ```bash
 # 查看 systemd 默认资源限制
-systemd-analyze show-property DefaultLimitNOFILE
-systemd-analyze show-property DefaultLimitNPROC
+systemctl show | grep -i defaultlimit
+systemctl show --property DefaultLimitNOFILE
+systemctl show --property DefaultLimitNPROC
+
+# 也可以直接查看配置文件
+grep -i limit /etc/systemd/system.conf
 ```
 
 | 资源类型 | 默认软限制 | 默认硬限制 | 说明 |
