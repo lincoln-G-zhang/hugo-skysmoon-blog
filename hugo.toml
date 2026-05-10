@@ -1,0 +1,50 @@
+baseURL = 'https://blog.skysmoon.ccwu.cc/'
+title = '明月当空'
+theme = "hugo-mini"
+
+defaultContentLanguage              = "zh"
+defaultContentLanguageInSubdirectory = false
+
+enableRobotsTXT = true
+disableKinds    = ["taxonomy"]
+ignoreErrors    = ["error-disable-taxonomy"]
+
+[permalinks]
+  blog = "/:slug/"
+
+[params]
+  favicon    = "images/favicon.png"
+  authorName = "明月当空"
+  authorURL  = "https://blog.skysmoon.ccwu.cc/"
+
+  copyrightYear = 2024
+
+  newPostDays      = 30
+  recentSidebarCount = 8
+
+  [params.social]
+    github   = "https://github.com"
+    email    = "hello@skysmoon.ccwu.cc"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[languages]
+  [languages.zh]
+    weight     = 1
+    locale     = "zh-CN"
+    label      = "中文"
+    contentDir = "content/zh"
+    [languages.zh.menu]
+      [[languages.zh.menu.main]]
+        identifier = "blog"
+        name       = "文章"
+        url        = "/blog/"
+        weight     = 1
+      [[languages.zh.menu.main]]
+        identifier = "about"
+        name       = "关于"
+        url        = "/about/"
+        weight     = 2

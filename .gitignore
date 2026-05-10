@@ -1,0 +1,19 @@
+# Hugo build output
+public/
+resources/
+
+# Build lock
+.hugo_build.lock
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# SQL backup (optional - uncomment if you want to exclude)
+# *.sql

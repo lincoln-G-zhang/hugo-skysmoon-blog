@@ -1,0 +1,86 @@
+[articles]
+other = "文章"
+
+[misc]
+other = "其他"
+
+[popular]
+other = "热门"
+
+[recent_posts]
+other = "更多文章"
+
+[home]
+other = "首页"
+
+[go_up]
+other = "回到顶部"
+
+[theme_light]
+other = "切换到浅色主题"
+
+[theme_dark]
+other = "切换到深色主题"
+
+[toggle_theme]
+other = "切换主题"
+
+[month_january]
+other = "一月"
+
+[month_february]
+other = "二月"
+
+[month_march]
+other = "三月"
+
+[month_april]
+other = "四月"
+
+[month_may]
+other = "五月"
+
+[month_june]
+other = "六月"
+
+[month_july]
+other = "七月"
+
+[month_august]
+other = "八月"
+
+[month_september]
+other = "九月"
+
+[month_october]
+other = "十月"
+
+[month_november]
+other = "十一月"
+
+[month_december]
+other = "十二月"
+
+[cat_marketing]
+other = "市场营销"
+
+[cat_strategy]
+other = "策略与框架"
+
+[cat_metrics]
+other = "指标与分析"
+
+[cat_leadership]
+other = "团队与领导力"
+
+[cat_self-development]
+other = "自我提升"
+
+[cat_productivity]
+other = "生产力"
+
+[cat_collections]
+other = "合集"
+
+[cat_getting-started]
+other = "入门指南"
