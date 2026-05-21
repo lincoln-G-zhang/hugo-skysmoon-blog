@@ -48,7 +48,36 @@ sudo apt install vim -y
 sudo update-alternatives --query editor | grep Value
 ```
 
-## 方法二：设置 EDITOR 环境变量（用户级）
+## 方法二：select-editor（强制 crontab 用 vim）
+
+Ubuntu 专门提供了 `select-editor` 命令，用于设置 `crontab -e` 的默认编辑器，比手动改变量更直接。
+
+```bash
+# 运行后会出现交互式菜单，选择 vim 对应的编号
+select-editor
+```
+
+运行效果示例：
+
+```
+1. /bin/nano        <---- 当前默认
+2. /usr/bin/vim.basic
+3. /usr/bin/vim.tiny
+
+Select number: 2
+```
+
+选择 `vim.basic` 后，配置会写入 `~/.selected_editor` 文件：
+
+```bash
+cat ~/.selected_editor
+# 输出示例：
+# SELECTED_EDITOR="/usr/bin/vim.basic"
+```
+
+> **注意**：`select-editor` 只影响 `crontab -e`，不影响 `visudo` 或其他程序。如需全面覆盖，请配合方法一或方法三使用。
+
+## 方法三：设置 EDITOR 环境变量（用户级）
 
 对 `crontab -e`、`git commit` 等遵守 `EDITOR` 的程序生效。
 
@@ -96,6 +125,7 @@ Defaults env_editor
 | 方法 | visudo | crontab -e | git commit | nano 替换 |
 |------|--------|------------|------------|-----------|
 | `update-alternatives` | ✅ | ✅ | ✅ | ✅ 系统全局 |
+| `select-editor` | ❌ | ✅ | ❌ | ❌ 仅 crontab |
 | `EDITOR` 环境变量 | ❌（除非 sudoers 配了 `env_editor`） | ✅ | ✅ | ❌ 仅当前用户 |
 | `sudoers Defaults editor` | ✅ | ❌ | ❌ | ❌ 仅 visudo |
 
@@ -141,7 +171,15 @@ sudo apt install vim -y
 sudo update-alternatives --config editor
 ```
 
-### Q3: 只想改当前用户，不影响系统？
+### Q3: select-editor 和 EDITOR 变量有什么区别？
+
+| 对比 | `select-editor` | `EDITOR` 变量 |
+|------|-----------------|----------------|
+| 影响范围 | 仅 `crontab -e` | 所有遵守 `EDITOR` 的程序 |
+| 配置位置 | `~/.selected_editor` | `~/.bashrc` / `~/.zshrc` |
+| 是否需要 sudo | ❌ | ❌ |
+
+### Q4: 只想改当前用户，不影响系统？
 
 用方法二设置 `EDITOR` 和 `VISUAL` 即可，不需要 `sudo`。
 
@@ -150,7 +188,8 @@ sudo update-alternatives --config editor
 | 目标 | 推荐方法 |
 |------|----------|
 | 系统全局生效（所有用户、所有命令） | `sudo update-alternatives --config editor` |
+| 仅 crontab 用 vim | `select-editor`（选 vim） |
 | 仅当前用户 | 设置 `~/.bashrc` 中 `EDITOR` / `VISUAL` |
 | 仅 visudo | 修改 `/etc/sudoers` 的 `Defaults editor` |
 
-最省心的方案是**方法一 + 方法二组合**：系统级用 `update-alternatives`，用户级也设好 `EDITOR`，全覆盖无死角。
+最省心的方案是**方法一 + `select-editor` 组合**：系统级用 `update-alternatives` 覆盖大多数场景，`select-editor` 强制 `crontab -e` 用 vim，双保险无死角。
