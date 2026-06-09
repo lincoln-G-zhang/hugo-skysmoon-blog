@@ -20,57 +20,47 @@ Nginx 是一个高性能的 HTTP 和反向代理服务器，在生产环境中�
 
 ```nginx
 server {
-    listen 80;
-    server_name abcd.cn;
 
-    # 主代理配置
-    location / {
-        # 后端服务地址
-        proxy_pass https://abcd.com;
+ listen 80;
 
-        # ==================== SSL 配置 ====================
-        # 解决 SSL SNI 握手问题（必须配置）
-        proxy_ssl_server_name on;
-        proxy_ssl_protocols TLSv1.2 TLSv1.3;
-        
-        # SSL 证书验证（根据需求调整）
-        # proxy_ssl_verify on;
-        # proxy_ssl_verify_depth 2;
-        # proxy_ssl_trusted_certificate /etc/nginx/ssl/ca.crt;
+ server_name abcd.cn;
 
-        # ==================== 请求头透传 ====================
-        # 传递真实客户端信息
-        proxy_set_header Host abcd.com;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Port $server_port;
-        
-        # 透传客户端 User-Agent 和 Referer
-        proxy_set_header User-Agent $http_user_agent;
-        proxy_set_header Referer $http_referer;
+ location / {
 
-        # ==================== 跳转处理 ====================
-        # 禁用自动跳转，保持原始地址
-        proxy_redirect off;
+ proxy_pass  `https://abcd.com`
 
-        # ==================== 高并发优化 ====================
-        # 使用 HTTP/1.1 协议
-        proxy_http_version 1.1;
-        
-        # 禁用 Connection 头，启用连接复用
-        proxy_set_header Connection "";
-        
-        # 后端故障转移策略
-        proxy_next_upstream error timeout invalid_header http_500 http_502 http_503 http_504;
-        
-        # 后端重试次数
-        proxy_next_upstream_tries 2;
+ # 解决 SSL SNI 握手（必须有）
 
-        # ==================== 日志配置 ====================
-        access_log /var/log/nginx/abcd.com.log json;
-    }
+ proxy_ssl_server_name on;
+
+ proxy_ssl_protocols TLSv1.2 TLSv1.3;
+
+ # 正确透传信息
+
+ proxy_set_header Host abcd.com;
+
+ proxy_set_header X-Real-IP $remote_addr;
+
+ proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+ proxy_set_header X-Forwarded-Proto http;
+
+ # 跳转修复
+
+ proxy_redirect off;
+
+ # 高并发优化
+
+ proxy_http_version 1.1;
+
+ proxy_set_header Connection "";
+
+ proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
+
+ access_log logs/abcd.com.log json;
+
+ }
+
 }
 ```
 
